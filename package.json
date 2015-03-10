@@ -1,0 +1,27 @@
+{
+  "name": "new-project",
+  "version": "1.0.0",
+  "description": "New project template",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/mmcbride1007/new-project"
+  },
+  "author": "Mike McBride (@mmcbride1007)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mmcbride1007/new-project/issues"
+  },
+  "homepage": "https://github.com/mmcbride1007/new-project",
+  "devDependencies": {
+    "browser-sync": "^2.2.3",
+    "gulp": "^3.8.11",
+    "gulp-less": "^3.0.1",
+    "gulp-rename": "^1.2.0",
+    "gulp-util": "^3.0.4",
+    "gulp-watch": "^4.1.1"
+  }
+}
