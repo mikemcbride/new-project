@@ -62,8 +62,8 @@ gulp.task('clean', function(cb) {
  * Watches LESS, HTML, and JS for changes and reloads browser on change
  */
 
-gulp.task('serve', ['compile-less', 'scripts', 'bs-reload', 'browser-sync'], function() {
-  gulp.start('compile-less');
+gulp.task('serve', ['clean'], function() {
+  gulp.start('compile-less', 'scripts', 'bs-reload', 'browser-sync');
   gulp.watch('src/css/*.less', ['compile-less']);
   gulp.watch('src/css/main.css', ['bs-reload']);
   gulp.watch('src/*.html', ['bs-reload']);
