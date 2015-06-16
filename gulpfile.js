@@ -9,7 +9,6 @@ var gulp = require('gulp'),
     watch = require('gulp-watch'),
     rename = require('gulp-rename'),
     concat = require('gulp-concat'),
-    notify = require('gulp-notify'),
     del = require('del'),
     uglify = require('gulp-uglify'),
     browserSync = require('browser-sync');
@@ -34,7 +33,6 @@ gulp.task('compile-less', function() {
     .pipe(rename({suffix: '.min'}))
     .pipe(minifycss())
     .pipe(gulp.dest('dist/css'))
-    .pipe(notify('LESS compiled and minified'))
     .pipe(browserSync.reload({stream: true}));
 });
 
@@ -46,7 +44,13 @@ gulp.task('scripts', function() {
     .pipe(rename({suffix: '.min'}))
     .pipe(uglify())
     .pipe(gulp.dest('dist/js'))
-    .pipe(notify({ message: 'Scripts task complete' }))
+    .pipe(browserSync.reload({stream: true}));
+});
+
+// copy HTML files
+gulp.task('html', function() {
+  return gulp.src('src/*.html')
+    .pipe(gulp.dest('dist'))
     .pipe(browserSync.reload({stream: true}));
 });
 
@@ -55,19 +59,26 @@ gulp.task('clean', function(cb) {
   del(['dist/css', 'dist/js', 'dist/img'], cb)
 });
 
+
 /* Serve Task
  *
  * Compiles LESS to CSS
+ * Minifies and moves JS
+ * Copies HTML files to dist
  * Starts a server on port 3000
  * Watches LESS, HTML, and JS for changes and reloads browser on change
  */
-
 gulp.task('serve', ['clean'], function() {
-  gulp.start('compile-less', 'scripts', 'bs-reload', 'browser-sync');
+  gulp.start('compile-less', 'scripts', 'html', 'bs-reload', 'browser-sync');
   gulp.watch('src/css/*.less', ['compile-less']);
   gulp.watch('src/css/main.css', ['bs-reload']);
-  gulp.watch('src/*.html', ['bs-reload']);
+  gulp.watch('src/*.html', ['html']);
   gulp.watch('src/js/*.js', ['scripts']);
+});
+
+// build task to populate the dist folder
+gulp.task('build', ['clean'], function() {
+  gulp.start('compile-less', 'scripts', 'html');
 });
 
 // default task - calls serve
