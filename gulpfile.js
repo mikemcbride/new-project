@@ -30,6 +30,7 @@ gulp.task('bs-reload', function() {
 gulp.task('compile-less', function() {
   return gulp.src('src/css/main.less')
     .pipe(less())
+    .pipe(autoprefixer())
     .pipe(rename('main.css'))
     .pipe(rename({suffix: '.min'}))
     .pipe(minifycss())
