@@ -11,7 +11,8 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     del = require('del'),
     uglify = require('gulp-uglify'),
-    browserSync = require('browser-sync');
+    browserSync = require('browser-sync'),
+    bower = require('main-bower-files');
 
 gulp.task('browser-sync', function() {
   browserSync({
@@ -59,6 +60,11 @@ gulp.task('clean', function(cb) {
   del(['dist/css', 'dist/js', 'dist/img'], cb)
 });
 
+// install main bower files
+gulp.task('bower', function() {
+  return gulp.src(bower(), { base: './bower_components' })
+      .pipe(gulp.dest('dist/lib'))
+});
 
 /* Serve Task
  *
@@ -69,7 +75,7 @@ gulp.task('clean', function(cb) {
  * Watches LESS, HTML, and JS for changes and reloads browser on change
  */
 gulp.task('serve', ['clean'], function() {
-  gulp.start('compile-less', 'scripts', 'html', 'bs-reload', 'browser-sync');
+  gulp.start('bower', 'compile-less', 'scripts', 'html', 'bs-reload', 'browser-sync');
   gulp.watch('src/css/*.less', ['compile-less']);
   gulp.watch('src/css/main.css', ['bs-reload']);
   gulp.watch('src/*.html', ['html']);
@@ -78,7 +84,7 @@ gulp.task('serve', ['clean'], function() {
 
 // build task to populate the dist folder
 gulp.task('build', ['clean'], function() {
-  gulp.start('compile-less', 'scripts', 'html');
+  gulp.start('bower', 'compile-less', 'scripts', 'html');
 });
 
 // default task - calls serve

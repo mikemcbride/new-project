@@ -7,17 +7,17 @@ To get started using this project, `cd` into the directory of your choosing and 
 ```
 git clone http://github.com/mmcbride1007/new-project [your-project-directory]
 cd [your-project-directory]
-npm install
+npm install && bower install
 ```
 
 ## Using this template
-To run this locally, `cd` into your project and run `gulp serve`. This will start a server and start a watch task on the directory.
+To run this locally, `cd` into your project and run `gulp serve`. This will start a server, compile your code into a dist folder, and watch for changes to the current directory.
 
 # License
 
 The MIT License (MIT)
 
-Copyright (c) 2015 @mmcbride1007 
+Copyright (c) 2015 @mmcbride1007
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
