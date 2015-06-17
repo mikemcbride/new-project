@@ -58,10 +58,10 @@ gulp.task('html', function() {
 
 // clean up dist folder
 gulp.task('clean', function(cb) {
-  del(['dist/css', 'dist/js', 'dist/img'], cb)
+  del(['dist/css', 'dist/js', 'dist/img', 'dist/lib'], cb)
 });
 
-// install main bower files
+// install main bower files. You still need to include these in your index.html. Path will be ./lib/component_name/main_file.ext
 gulp.task('bower', function() {
   return gulp.src(bower(), { base: './bower_components' })
       .pipe(gulp.dest('dist/lib'))
