@@ -67,26 +67,21 @@ gulp.task('bower', function() {
       .pipe(gulp.dest('dist/lib'))
 });
 
-/* Serve Task
- *
- * Compiles LESS to CSS
- * Minifies and moves JS
- * Copies HTML files to dist
- * Starts a server on port 3000
- * Watches LESS, HTML, and JS for changes and reloads browser on change
- */
-gulp.task('serve', ['clean'], function() {
-  gulp.start('bower', 'compile-less', 'scripts', 'html', 'bs-reload', 'browser-sync');
+// build task to populate the dist folder
+gulp.task('build', ['clean'], function() {
+  gulp.start('bower', 'compile-less', 'scripts', 'html');
+});
+
+// watch task
+gulp.task('watch', function() {
   gulp.watch('src/css/*.less', ['compile-less']);
   gulp.watch('src/css/main.css', ['bs-reload']);
   gulp.watch('src/*.html', ['html']);
   gulp.watch('src/js/*.js', ['scripts']);
 });
 
-// build task to populate the dist folder
-gulp.task('build', ['clean'], function() {
-  gulp.start('bower', 'compile-less', 'scripts', 'html');
-});
+// cleans dist, builds the files, starts a server, and watches files for changes
+gulp.task('serve', ['clean', 'build', 'browser-sync', 'watch']);
 
 // default task - calls serve
 gulp.task('default', ['serve']);
