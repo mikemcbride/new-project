@@ -12,6 +12,7 @@ var gulp = require('gulp'),
     del = require('del'),
     uglify = require('gulp-uglify'),
     browserSync = require('browser-sync'),
+    plumber = require('gulp-plumber'),
     bower = require('main-bower-files');
 
 gulp.task('browser-sync', function() {
@@ -29,6 +30,7 @@ gulp.task('bs-reload', function() {
 // compile LESS to CSS
 gulp.task('compile-less', function() {
   return gulp.src('src/css/main.less')
+    .pipe(plumber())
     .pipe(less())
     .pipe(autoprefixer())
     .pipe(rename('main.css'))
@@ -41,6 +43,7 @@ gulp.task('compile-less', function() {
 // concatenate and minify javascript
 gulp.task('scripts', function() {
   return gulp.src('src/js/*.js')
+    .pipe(plumber())
     .pipe(concat('main.js'))
     .pipe(gulp.dest('dist/js'))
     .pipe(rename({suffix: '.min'}))
@@ -52,6 +55,7 @@ gulp.task('scripts', function() {
 // copy HTML files
 gulp.task('html', function() {
   return gulp.src('src/*.html')
+    .pipe(plumber())
     .pipe(gulp.dest('dist'))
     .pipe(browserSync.reload({stream: true}));
 });
@@ -64,7 +68,8 @@ gulp.task('clean', function(cb) {
 // install main bower files. You still need to include these in your index.html. Path will be ./lib/component_name/main_file.ext
 gulp.task('bower', function() {
   return gulp.src(bower(), { base: './bower_components' })
-      .pipe(gulp.dest('dist/lib'))
+    .pipe(plumber())
+    .pipe(gulp.dest('dist/lib'))
 });
 
 // build task to populate the dist folder
