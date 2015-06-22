@@ -34,6 +34,7 @@ gulp.task('compile-less', function() {
     .pipe(less())
     .pipe(autoprefixer())
     .pipe(rename('main.css'))
+    .pipe(gulp.dest('dist/css'))
     .pipe(rename({suffix: '.min'}))
     .pipe(minifycss())
     .pipe(gulp.dest('dist/css'))
