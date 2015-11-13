@@ -1,9 +1,6 @@
 {
   "name": "new-project",
   "version": "0.0.0",
-  "dependencies": {
-    "flexbox-mixins": "~1.1.0"
-  },
   "devDependencies": {
     "components-font-awesome": "~4.3.0",
     "jquery": "~2.1.4"
