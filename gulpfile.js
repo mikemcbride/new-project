@@ -108,7 +108,7 @@ gulp.task('clean', function(cb) {
 
 // build task to populate the dist folder
 gulp.task('build', ['clean'], function() {
-  gulp.start('styles', 'scripts', 'html');
+  gulp.start('styles', 'scripts', 'third-party', 'html');
 });
 
 // watch task
