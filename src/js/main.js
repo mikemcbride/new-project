@@ -1,4 +1,4 @@
 // your javascript goes in here
-function init() {
-  console.log('Hello, world');
-}
+$(document).ready(function() {
+  console.log('Hello world!');
+})

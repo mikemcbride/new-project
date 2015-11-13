@@ -3,7 +3,8 @@
 // Load plugins
 var gulp = require('gulp'),
     less = require('gulp-less'),
-    autoprefixer = require('gulp-autoprefixer'),
+    autoprefixer = require('autoprefixer'),
+    postcss = require('gulp-postcss'),
     minifycss = require('gulp-minify-css'),
     imagemin = require('gulp-imagemin'),
     pngquant = require('imagemin-pngquant'),
@@ -15,7 +16,9 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     browserSync = require('browser-sync'),
     plumber = require('gulp-plumber'),
-    bower = require('main-bower-files');
+    processors = [
+      autoprefixer({browsers: ['last 3 versions']})
+    ];
 
 var bowerDir = './bower_components';
 
@@ -40,15 +43,15 @@ gulp.task('icons', function() { 
 // compile LESS to CSS
 // run autoprefixer
 // minify compiled CSS
-gulp.task('compile-less', function() {
+gulp.task('styles', function() {
   return gulp.src('src/css/main.less')
     .pipe(plumber())
     .pipe(less())
-    .pipe(autoprefixer())
+    .pipe(postcss(processors))
     .pipe(rename('main.css'))
     .pipe(gulp.dest('dist/css'))
     .pipe(rename({suffix: '.min'}))
-    .pipe(minifycss())
+    .pipe(minifycss({advanced: false, keepSpecialComments: 0}))
     .pipe(gulp.dest('dist/css'))
     .pipe(browserSync.reload({stream: true}));
 });
@@ -59,10 +62,10 @@ gulp.task('third-party', function() {
   return gulp.src(bowerDir + '/jquery/dist/jquery.js')
     .pipe(plumber())
     .pipe(concat('third-party.js'))
-    .pipe(gulp.dest('dist/js'))
+    .pipe(gulp.dest('dist/lib'))
     .pipe(rename({suffix: '.min'}))
     .pipe(uglify())
-    .pipe(gulp.dest('dist/js'))
+    .pipe(gulp.dest('dist/lib'))
     .pipe(browserSync.reload({stream: true}));
 });
 
@@ -103,21 +106,14 @@ gulp.task('clean', function(cb) {
   del(['dist/css', 'dist/js', 'dist/img', 'dist/lib'], cb)
 });
 
-// install main bower files. You still need to include these in your index.html. Path will be ./lib/component_name/main_file.ext
-gulp.task('bower', function() {
-  return gulp.src(bower(), { base: './bower_components' })
-    .pipe(plumber())
-    .pipe(gulp.dest('dist/lib'))
-});
-
 // build task to populate the dist folder
 gulp.task('build', ['clean'], function() {
-  gulp.start('bower', 'compile-less', 'scripts', 'html');
+  gulp.start('styles', 'scripts', 'third-party', 'html');
 });
 
 // watch task
 gulp.task('watch', function() {
-  gulp.watch('src/css/*.less', ['compile-less']);
+  gulp.watch('src/css/*.less', ['styles']);
   gulp.watch('src/css/main.css', ['bs-reload']);
   gulp.watch('src/*.html', ['html']);
   gulp.watch('src/img/*', ['images']);
